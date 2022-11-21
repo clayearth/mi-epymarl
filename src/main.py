@@ -14,7 +14,7 @@ import yaml
 
 from run import run
 
-SETTINGS['CAPTURE_MODE'] = "fd" # set to "no" if you want to see stdout/stderr in console
+SETTINGS['CAPTURE_MODE'] = "sys" # set to "no" if you want to see stdout/stderr in console
 logger = get_logger()
 
 ex = Experiment("pymarl")
@@ -106,10 +106,10 @@ if __name__ == '__main__':
 
     # Save to disk by default for sacred
     logger.info("Saving to FileStorageObserver in results/sacred.")
-    file_obs_path = os.path.join(results_path, f"sacred/{config_dict['name']}/{map_name}")
+    file_obs_path = os.path.join(results_path, f"sacred/{config_dict['name']}/{map_name.replace(':','_')}")
 
     # ex.observers.append(MongoObserver(db_name="marlbench")) #url='172.31.5.187:27017'))
-    ex.observers.append(FileStorageObserver.create(file_obs_path))
+    ex.observers.append(FileStorageObserver(file_obs_path))
     # ex.observers.append(MongoObserver())
 
     ex.run_commandline(params)
